@@ -94,8 +94,15 @@ tx_sp <- as(tex_border, "Spatial")
 
 tx_owin <- as(tx_sp, "owin")     # texas outer window, what we will use to bound our data
 
+all_ppp <- ppp(spill_ppp$x, spill_ppp$y, window = tx_owin) # rejects any points in space that aren't within the bounds of the window (if looking at the above map, there are a couple of obvious points outside the texas border)
 ```
 
+### A density plot:
+```{r}
+
+plot(density(all_ppp, sigma = 0.4)) # density plots are easy to make, but can change the story of your data. Changing sigma alters the visual representation of the plot.
+
+```
 
 
 
