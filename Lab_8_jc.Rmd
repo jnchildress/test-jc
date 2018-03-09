@@ -105,7 +105,36 @@ plot(density(all_ppp, sigma = 0.4)) # density plots are easy to make, but can ch
 ```
 
 
+### Quadrat test for spatial evenness
+- Are oil spills evenly distributed throughout Texas for 2016?
 
+```{r}
+
+oil_qt <- quadrat.test(all_ppp, nx = 5, ny = 5) # horizontally (nx) and vertically (ny) there are 5 regions. Counts the number of events and figures out the intensity of each quadrat and performs a chi-squared test amongst the quadrats.
+oil_qt
+# p-value is very small indicating that we reject the null hypothesis that the data follows completely spatial randomness. The data is NOT evenly distributed. 
+
+plot(all_ppp)
+plot(oil_qt, add = TRUE, cex = 0.4)
+
+# Looking at the upper left quadrat: the number of expected events would be 9 because it is a partial quadrat. The upper left number (2) is the actual number of events. On the bottom, there is a standardized measure of how different it is from the expected in terms of standard deviations (-2.3). For full quadrats, the expected number of counts is 14.5 if the data were truly even. 
+
+```
+
+### G-Function for nearest neighbor analysis
+```{r}
+
+r <- seq(0,1, by = 0.01)
+
+# based on a Poison distribution, what would this data look like if it was truly completely spatial randomness?
+
+oil_gfun <- envelope(all_ppp, fun = Gest, r = r, nsim = 100) # looking for one point's single nearest neighbor, which is why this runs quickly.
+
+ggplot(oil_gfun, aes(x = r, y = obs)) +
+  geom_line(color = "black") +
+  geom_line(aes(x = r, y = theo), color = "red") # This graphs tells us that our observed data has a higher proportion of point pairss with nearest neighbors of shorter distances compared to modeled data that was completely spatially random.
+
+```
 
 
 
