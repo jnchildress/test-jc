@@ -137,6 +137,18 @@ ggplot(oil_gfun, aes(x = r, y = obs)) +
 ```
 
 
+### Nearest neighbor using the L-function (Ripley's K, standardized)
+```{r}
+
+r2 <- seq(0,3, by = 0.5) # increments are so big because it will take a while for simualtions to run at smaller intervals
+
+oil_lfun <- envelope(all_ppp, fun = Lest, r = r2, nsim = 20, global = TRUE) # only 20 simulations because it finds all nearest neighbors for all points using incremental bubbles.
+
+ggplot(oil_lfun, aes(x = r2, y = obs)) +
+  geom_line(color = "black") +
+  geom_line(aes(x = r2, y = theo), color = "blue")
+
+```
 
 
 
